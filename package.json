@@ -4,8 +4,12 @@
   "description": "",
   "main": "au-bot.js",
   "scripts": {
+    "start": "node server.js"
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kairides",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.4.1"
+  }
 }
