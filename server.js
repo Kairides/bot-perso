@@ -12,7 +12,7 @@ const MOTS_INTERDITS = ["connard", "salaud", "salopard", "salope", "bite", "coui
 function checkMot(mot){
     var grossier = false;
     for (var i = 0; i < MOTS_INTERDITS.length; i++){
-        if (MOTS_INTERDITS[i] === mot){
+        if (MOTS_INTERDITS[i] === mot.toLowerCase()){
             grossier = true;
         }
     }
