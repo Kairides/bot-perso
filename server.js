@@ -7,7 +7,10 @@ client.login(accessKeyId);
 
 var playing = false;
 
-const MOTS_INTERDITS = ["connard", "salaud", "salopard", "salope", "bite", "couilles", "merde", "chiasse"];
+const MOTS_INTERDITS = ["connard", "connards", "salauds", "salaud", "salopard", "salopards", "salope", "salopes", "bite", "couilles", "merde", "chiasse", "putain", 
+			"bordel", "foutre", "con", "cons", "couille", "batard", "batards", "bougnoul", "enculé", "enflure", "branleur", "pute", "putes", "gouine",
+		       "gouines", "pd", "pédé", "pouffiasse", "puoffiasses", "lopette", "nègre", "negre", "negres", "nègres", "mongol", "mongols", "nazi", "nazis",
+			"négro", "négros", "nique", "niquer", "trouduc", "Rob Schneider"];
 
 function checkMot(mot){
     var grossier = false;
