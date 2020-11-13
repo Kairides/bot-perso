@@ -27,7 +27,7 @@ function checkMot(mot){
 };
 
 function checkMessage(message){
-    var mots = message.split(" ");
+    var mots = message.content.split(" ");
     var grossier = false;
     mots.forEach(mot => {
         if (checkMot(mot) != ""){grossier = true;}
@@ -50,7 +50,7 @@ client.on('ready', () =>{
 
 client.on('message', message =>{
 
-    checkMessage(message.content);
+    checkMessage(message);
 
     if(!message.content.startsWith(prefix) || message.author.bot)return;
     
