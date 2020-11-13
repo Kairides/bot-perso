@@ -42,7 +42,7 @@ client.on('ready', () =>{
 
 client.on('message', message =>{
 
-    console.log(message);
+    //console.log(message);
 
     if(checkMessage(message)){
         var msg = new Message();
@@ -54,7 +54,7 @@ client.on('message', message =>{
             return;
     }
 
-    if(!message.content.startsWith(prefix) || message.author.bot)return;
+    if (!message.content.startsWith(prefix) || message.author.bot) console.log("BITE");
     
     var args = message.content.slice(prefix.length).trim().split(" ");
     const command = args.shift().toLowerCase();
