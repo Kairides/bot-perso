@@ -42,7 +42,7 @@ client.on('ready', () =>{
 
 client.on('message', message =>{
 
-    //console.log(message.content);
+    console.log("prefixe = "+prefix);
 
     if(checkMessage(message)){
         var msg = new Message();
