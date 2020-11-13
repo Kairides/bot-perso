@@ -42,7 +42,7 @@ client.on('ready', () =>{
 
 client.on('message', message =>{
 
-    console.log(message.content);
+    //console.log(message.content);
 
     if(checkMessage(message)){
         var msg = new Message();
@@ -54,10 +54,15 @@ client.on('message', message =>{
             return;
     }
 
-    console.log(message.content);
+    //console.log(message.content);
 
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
-    
+    if (!message.content.startsWith(prefix) || message.author.bot) {
+        
+        console.log('mes couilles')
+        return;
+
+    }
+
     var args = message.content.slice(prefix.length).trim().split(" ");
     const command = args.shift().toLowerCase();
     console.log(args.join(" "));
