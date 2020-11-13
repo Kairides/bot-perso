@@ -33,15 +33,7 @@ function checkMessage(message){
         if (checkMot(mot) != ""){grossier = true;}
     });
 
-    if(grossier){
-        var msg = new Message();
-        msg.content = "le contenu de votre message a été jugé inapproprié et a donc été supprimé.";
-        message.reply(msg);
-        message.delete({ timeout: 100 })
-            .then(msg => console.log(`Deleted message from ${msg.author.username} after 0.1 seconds`))
-            .catch(console.error);
-    }
-
+    return grossier;
 }
 
 client.on('ready', () =>{
@@ -50,7 +42,15 @@ client.on('ready', () =>{
 
 client.on('message', message =>{
 
-    checkMessage(message);
+    if(checkMessage(message)){
+        var msg = new Message();
+        msg.content = "le contenu de votre message a été jugé inapproprié et a donc été supprimé.";
+        message.reply(msg);
+        message.delete({ timeout: 100 })
+            .then(msg => console.log(`Deleted message from ${msg.author.username} after 0.1 seconds`))
+            .catch(console.error);
+            return;
+    }
 
     if(!message.content.startsWith(prefix) || message.author.bot)return;
     
