@@ -42,7 +42,9 @@ client.on('ready', () =>{
 
 client.on('message', message =>{
 
-    if(checkMessage(message)){
+    console.log(message.content);
+
+    /*if(checkMessage(message)){
         var msg = new Message();
         msg.content = "le contenu de votre message a été jugé inapproprié et a donc été supprimé.";
         message.reply(msg);
@@ -50,7 +52,7 @@ client.on('message', message =>{
             .then(msg => console.log(`Deleted message from ${msg.author.username} after 0.1 seconds`))
             .catch(console.error);
             return;
-    }
+    }*/
 
     if(!message.content.startsWith(prefix) || message.author.bot)return;
     
