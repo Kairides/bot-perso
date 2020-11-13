@@ -58,7 +58,7 @@ client.on('message', message =>{
 
     if (!message.content.startsWith(prefix) || message.author.bot) {
         
-        console.log(message.content.startsWith(prefix));
+        console.log(message.content + message.content.startsWith(prefix));
         return;
 
     }
