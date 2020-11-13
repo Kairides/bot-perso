@@ -58,7 +58,7 @@ client.on('message', message =>{
     const command = args.shift().toLowerCase();
     console.log(args.join(" "));
 
-    if(command === "play" && (message.channel.type === "dm" || message.channel.name === "général")){
+    if(command === "play" && (message.channel.type === "dm" || message.channel.name === "general")){
         if(!args.length){
             message.reply("paramètres de recherche manquants. Pour que je joue un morceau," +
             "veuillez taper la commande ```!play``` suivie de ce que vous voulez que je joue.\n"+
