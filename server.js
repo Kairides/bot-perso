@@ -84,6 +84,8 @@ client.on('message', message =>{
                 console.error(err);
             });
         }
+    }else{
+        message.reply("commande inconnue, essayez une commande comme ```!play```.");
     }
 });
 
