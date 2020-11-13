@@ -27,7 +27,7 @@ function checkMot(mot){
 };
 
 function checkMessage(message){
-    var mots = message.content.split(" ");
+    var mots = message.split(" ");
     var grossier = false;
     mots.forEach(mot => {
         if (checkMot(mot) != ""){grossier = true;}
