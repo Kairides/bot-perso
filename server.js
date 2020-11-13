@@ -64,6 +64,10 @@ client.on('message', message =>{
             "veuillez taper la commande ```!play``` suivie de ce que vous voulez que je joue.\n"+
             "exemple: ```!play akroasis```");
         }else{
+
+            message.reply("paramètres de recherche manquants. Pour que je joue un morceau," +
+            "veuillez taper la commande ```!play``` suivie de ce que vous voulez que je joue.\n"+
+            "exemple: ```!play akroasis```");
             var search = args.join(" ");
             
             ytsr.getFilters('github').then(async (filters1) => {
