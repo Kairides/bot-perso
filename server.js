@@ -37,6 +37,15 @@ function checkMessage(message){
     return grossier;
 }
 
+async function deleteMessage(message){
+    var msg = new Message();
+        msg.content = "le contenu de votre message a été jugé inapproprié et a donc été supprimé.";
+        message.reply(msg);
+        message.delete({ timeout: 100 })
+            .then(msg => console.log(`Deleted message from ${msg.author.username} after 0.1 seconds`))
+            .catch(console.error);
+}
+
 async function searchVideo(searched){
 
     const options = {
@@ -62,21 +71,14 @@ client.on('ready', () =>{
 client.on('message', message =>{
 
     if(checkMessage(message)){
-        var msg = new Message();
-        msg.content = "le contenu de votre message a été jugé inapproprié et a donc été supprimé.";
-        message.reply(msg);
-        message.delete({ timeout: 100 })
-            .then(msg => console.log(`Deleted message from ${msg.author.username} after 0.1 seconds`))
-            .catch(console.error);
-            return;
+        deleteMessage(message);
+        return;
     }
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     var args = message.content.slice(prefix.length).trim().split(" ");
     const command = args.shift().toLowerCase();
-
-    console.log(command, message.channel.type, message.channel.name);
     
     if(message.channel.type === "dm" || message.channel.name === "general"){
         if(command === "play"){
