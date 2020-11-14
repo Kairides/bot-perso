@@ -42,10 +42,6 @@ client.on('ready', () =>{
 
 client.on('message', message =>{
 
-    console.log("prefixe = "+prefix);
-
-    //TODO: comprendre pourquoi il ne trouve pas le prefixe
-
     if(checkMessage(message)){
         var msg = new Message();
         msg.content = "le contenu de votre message a été jugé inapproprié et a donc été supprimé.";
@@ -56,8 +52,6 @@ client.on('message', message =>{
             return;
     }
 
-    //console.log(message.content);
-
     if (!message.content.startsWith(prefix) || message.author.bot) {
         
         console.log(message.content + message.content.startsWith(prefix));
@@ -67,9 +61,10 @@ client.on('message', message =>{
 
     var args = message.content.slice(prefix.length).trim().split(" ");
     const command = args.shift().toLowerCase();
-    console.log(args.join(" "));
 
-    if(command === "play" && (message.channel.type === "dm" || message.channel.name === "general")){
+    console.log(command, message.channel.type, message.channel.name);
+    
+    if(command === 'play' && (message.channel.type === "dm" || message.channel.name === "general")){
         if(!args.length){
             message.reply("paramètres de recherche manquants. Pour que je joue un morceau," +
             "veuillez taper la commande ```!play``` suivie de ce que vous voulez que je joue.\n"+
@@ -96,7 +91,7 @@ client.on('message', message =>{
             });
         }
     }else{
-        message.reply("commande inconnue, essayez une commande comme ```!play```.");
+        message.reply("commande inconnue, essayez une commande comme ```!play```");
     }
 });
 
