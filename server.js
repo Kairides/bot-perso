@@ -64,35 +64,38 @@ client.on('message', message =>{
 
     console.log(command, message.channel.type, message.channel.name);
     
-    if(command === 'play' && (message.channel.type === "dm" || message.channel.name === "general")){
-        if(!args.length){
-            message.reply("paramètres de recherche manquants. Pour que je joue un morceau," +
-            "veuillez taper la commande ```!play``` suivie de ce que vous voulez que je joue.\n"+
-            "exemple: ```!play akroasis```");
+    if(message.channel.type === "dm" || message.channel.name === "general"){
+        if(command === "play"){
+            if(!args.length){
+                message.reply("paramètres de recherche manquants. Pour que je joue un morceau," +
+                "veuillez taper la commande ```!play``` suivie de ce que vous voulez que je joue.\n"+
+                "exemple: ```!play akroasis```");
+            }else{
+    
+                message.reply("Pour l'instant, je ne sais pas quoi mettre ici.");
+                var search = args.join(" ");
+                
+                ytsr.getFilters('github').then(async (filters1) => {
+                    const filter1 = filters1.get('Type').find(o => o.name === 'Video');
+                    const filters2 = await ytsr.getFilters(filter1.ref);
+                    const filter2 = filters2.get('Duration').find(o => o.name.startsWith('Short'));
+                    const options = {
+                        limit: 5,
+                        nextpageRef: filter2.ref,
+                    }
+                    const searchResults = await ytsr(null, options);
+                    dosth(searchResults);
+                }).catch(err => {
+                    console.error(err);
+                });
+            }
         }else{
-
-            message.reply("paramètres de recherche manquants. Pour que je joue un morceau," +
-            "veuillez taper la commande ```!play``` suivie de ce que vous voulez que je joue.\n"+
-            "exemple: ```!play akroasis```");
-            var search = args.join(" ");
-            
-            ytsr.getFilters('github').then(async (filters1) => {
-                const filter1 = filters1.get('Type').find(o => o.name === 'Video');
-                const filters2 = await ytsr.getFilters(filter1.ref);
-                const filter2 = filters2.get('Duration').find(o => o.name.startsWith('Short'));
-                const options = {
-                    limit: 5,
-                    nextpageRef: filter2.ref,
-                }
-                const searchResults = await ytsr(null, options);
-                dosth(searchResults);
-            }).catch(err => {
-                console.error(err);
-            });
+            message.reply("commande inconnue, essayez une commande comme ```!play```");
         }
     }else{
-        message.reply("commande inconnue, essayez une commande comme ```!play```");
+        message.reply("La commande "+ command+ " n'est pas utilisable dans le salon "+ message.channel.name+ ".");
     }
+        
 });
 
 /*function resetPlaying(){
