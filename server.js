@@ -46,7 +46,103 @@ async function deleteMessage(message){
             .catch(console.error);
 }
 
-async function searchVideo(searched){
+function play(guild, song) {
+    const serverQueue = queue.get(guild.id);
+    if (!song) {
+      serverQueue.voiceChannel.leave();
+      queue.delete(guild.id);
+      return;
+    }
+  
+    const dispatcher = serverQueue.connection
+      .play(ytdl(song.url))
+      .on("finish", () => {
+        serverQueue.songs.shift();
+        play(guild, serverQueue.songs[0]);
+      })
+      .on("error", error => console.error(error));
+    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+    serverQueue.textChannel.send(`Start playing: **${song.title}**`);
+  }
+
+async function searchVideo(message, serverQueue){
+
+    const voiceChannel = message.member.voice.channel;
+    if(!args.length){
+        message.reply("paramètres de recherche manquants. Pour que je joue un morceau," +
+        "veuillez taper la commande \"play\" suivie de ce que vous voulez que je joue.\n"+
+        "Exemple: ```!play akroasis```");
+    }else{
+        if(!voiceChannel){
+            message.reply("vous devez être dans un canal vocal pour ecoutez de la musique.");
+            return;
+        }else{
+            var search = args.join(" ");
+            const songInfo = await ytdl.getInfo(search);
+            const song = {
+                title: songInfo.videoDetails.title,
+                url: songInfo.videoDetails.video_url,
+            };
+
+            if(!serverQueue){
+
+                const queueConstruct = {
+                    textChannel: message.channel,
+                    voiceChannel: voiceChannel,
+                    connection: null,
+                    songs: [],
+                    volume: 5,
+                    playing: true
+                };
+
+                queue.set(message.guild.id, queueConstruct);
+
+                queueConstruct.songs.push(song);
+
+                try{
+                    var connection = voice.join();
+                    queueConstruct.connection = connection;
+                    play(message.guild, queueConstruct.songs[0]);
+                } catch (err){
+                    console.log(err);
+                    queue.delete(message.guild.id);
+                    return message.channel.send(err);
+                }
+            }else{
+                serverQueue.songs.push(song);
+                return message.channel.send(`La chanson ${song.title} a été ajoutée à la file d'attente.`)
+            }
+        }
+    }
+
+    /*class song {
+        title;
+        url;
+
+        constructor(title, url) {
+            this.title = title;
+            this.url = url;
+        }
+    }
+
+    const result = {
+        observers: {},
+        playlist: false,
+
+        on(eventName, observer) {
+            if(!this.observers[eventName]){
+                this.observers[eventName] = [];
+            }
+
+            this.observers[eventName].push(observer)
+        },
+
+        emit(eventName, object) {
+            for (const observer of this.observers[eventName]) {
+                observer(object)
+            }
+        }
+    };
 
     const options = {
                     limit: 1,
@@ -57,11 +153,14 @@ async function searchVideo(searched){
             message.reply("Désolé, je n'ai rien trouvé qui corresponde à "+ searched);
         }else{
             const video = info.items[0];
-            return new song(video.title, video.link);
+            let s = song(video.title, video.link);
+
+            result.emit("video", s);
+            result.emit("done", null);
         }
     }).catch(error =>{
         console.log(error);
-    })
+    })*/
 }
 
 client.on('ready', () =>{
@@ -75,6 +174,8 @@ client.on('message', message =>{
         return;
     }
 
+    const serverQueue = queue.get(message.guild.id);
+
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     var args = message.content.slice(prefix.length).trim().split(" ");
@@ -82,38 +183,10 @@ client.on('message', message =>{
     
     if(message.channel.type === "dm" || message.channel.name === "general"){
         if(command === "play"){
-            if(!args.length){
-                message.reply("paramètres de recherche manquants. Pour que je joue un morceau," +
-                "veuillez taper la commande \"play\" suivie de ce que vous voulez que je joue.\n"+
-                "Exemple: ```!play akroasis```");
-            }else{
-    
-                //message.reply("Pour l'instant, je ne sais pas quoi mettre ici.");
-                var search = args.join(" ");
-                console.log(searchVideo(search));
 
-                /*
-                const result = {
-                    observer: {},
-                    playlist: false,
+            searchVideo(message, serverQueue);
 
-                    on
-                }
-                
-                ytsr.getFilters('github').then(async (filters1) => {
-                    const filter1 = filters1.get('Type').find(o => o.name === 'Video');
-                    const filters2 = await ytsr.getFilters(filter1.ref);
-                    const filter2 = filters2.get('Duration').find(o => o.name.startsWith('Short'));
-                    const options = {
-                        limit: 5,
-                        nextpageRef: filter2.ref,
-                    }
-                    const searchResults = await ytsr(null, options);
-                    dosth(searchResults);
-                }).catch(err => {
-                    console.error(err);
-                });*/
-            }
+            
         }else{
             message.reply("commande inconnue, essayez une commande comme ```!play```");
         }
