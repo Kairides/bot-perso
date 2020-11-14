@@ -38,6 +38,11 @@ function checkMessage(message){
 }
 
 async function searchVideo(searched){
+
+    const options = {
+                    limit: 1,
+    };
+
     ytsr(searched, options).then(info =>{
         if(info.items.length < 1){
             message.reply("Désolé, je n'ai rien trouvé qui corresponde à "+ searched);
@@ -84,10 +89,6 @@ client.on('message', message =>{
                 //message.reply("Pour l'instant, je ne sais pas quoi mettre ici.");
                 var search = args.join(" ");
                 console.log(searchVideo(search));
-
-                /*const options = {
-                    limit: 1,
-                }
 
                 const result = {
                     observer: {},
