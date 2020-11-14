@@ -100,7 +100,7 @@ async function searchVideo(args, message, serverQueue){
                 queueConstruct.songs.push(song);
 
                 try{
-                    var connection = voice.join();
+                    var connection = voiceChannel.join();
                     queueConstruct.connection = connection;
                     play(message.guild, queueConstruct.songs[0]);
                 } catch (err){
