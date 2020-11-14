@@ -65,7 +65,7 @@ function play(guild, song) {
     serverQueue.textChannel.send(`Start playing: **${song.title}**`);
   }
 
-async function searchVideo(message, serverQueue){
+async function searchVideo(args, message, serverQueue){
 
     const voiceChannel = message.member.voice.channel;
     if(!args.length){
@@ -184,7 +184,7 @@ client.on('message', message =>{
     if(message.channel.type === "dm" || message.channel.name === "general"){
         if(command === "play"){
 
-            searchVideo(message, serverQueue);
+            searchVideo(args, message, serverQueue);
 
             
         }else{
