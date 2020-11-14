@@ -7,7 +7,8 @@ const accessKeyId = process.env.key_discord;
 const client = new Client();
 client.login(accessKeyId);
 
-const broadcast = client.voice.createBroadcast()
+const broadcast = client.voice.createBroadcast();
+const queue = new Map();
 
 //var playing = false;
 
@@ -36,6 +37,19 @@ function checkMessage(message){
     return grossier;
 }
 
+async function searchVideo(searched){
+    ytsr(search, options).then(info =>{
+        if(info.items.length < 1){
+            message.reply("Désolé, je n'ai rien trouvé qui corresponde à "+ search);
+        }else{
+            const video = info.items[0];
+            return new song(video.title, video.link);
+        }
+    }).catch(error =>{
+        console.log("Couille dans le paté.")
+    })
+}
+
 client.on('ready', () =>{
 	console.log("I am ready !");
 });
@@ -52,12 +66,7 @@ client.on('message', message =>{
             return;
     }
 
-    if (!message.content.startsWith(prefix) || message.author.bot) {
-        
-        console.log(message.content + message.content.startsWith(prefix));
-        return;
-
-    }
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     var args = message.content.slice(prefix.length).trim().split(" ");
     const command = args.shift().toLowerCase();
@@ -68,12 +77,24 @@ client.on('message', message =>{
         if(command === "play"){
             if(!args.length){
                 message.reply("paramètres de recherche manquants. Pour que je joue un morceau," +
-                "veuillez taper la commande ```!play``` suivie de ce que vous voulez que je joue.\n"+
-                "exemple: ```!play akroasis```");
+                "veuillez taper la commande \"play\" suivie de ce que vous voulez que je joue.\n"+
+                "Exemple: ```!play akroasis```");
             }else{
     
-                message.reply("Pour l'instant, je ne sais pas quoi mettre ici.");
+                //message.reply("Pour l'instant, je ne sais pas quoi mettre ici.");
                 var search = args.join(" ");
+                console.log(searchVideo(search));
+
+                /*const options = {
+                    limit: 1,
+                }
+
+                const result = {
+                    observer: {},
+                    playlist: false,
+
+                    on
+                }
                 
                 ytsr.getFilters('github').then(async (filters1) => {
                     const filter1 = filters1.get('Type').find(o => o.name === 'Video');
@@ -87,15 +108,12 @@ client.on('message', message =>{
                     dosth(searchResults);
                 }).catch(err => {
                     console.error(err);
-                });
+                });*/
             }
         }else{
             message.reply("commande inconnue, essayez une commande comme ```!play```");
         }
-    }else{
-        message.reply("La commande "+ command+ " n'est pas utilisable dans le salon "+ message.channel.name+ ".");
-    }
-        
+    }        
 });
 
 /*function resetPlaying(){
