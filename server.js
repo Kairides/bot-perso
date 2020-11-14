@@ -38,9 +38,9 @@ function checkMessage(message){
 }
 
 async function searchVideo(searched){
-    ytsr(search, options).then(info =>{
+    ytsr(searched, options).then(info =>{
         if(info.items.length < 1){
-            message.reply("Désolé, je n'ai rien trouvé qui corresponde à "+ search);
+            message.reply("Désolé, je n'ai rien trouvé qui corresponde à "+ searched);
         }else{
             const video = info.items[0];
             return new song(video.title, video.link);
