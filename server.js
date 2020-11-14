@@ -51,7 +51,7 @@ async function searchVideo(searched){
             return new song(video.title, video.link);
         }
     }).catch(error =>{
-        console.log("Couille dans le paté.")
+        console.log(error);
     })
 }
 
