@@ -1,7 +1,7 @@
 const {Client, MessageEmbed, Message, MessageReaction} = require('discord.js');
 const ytdl = require('ytdl-core');
 const ytsr = require('ytsr');
-const prefix = require('./config.json');
+const {prefix, param} = require('./config.json');
 
 const accessKeyId = process.env.key_discord;
 const client = new Client();
@@ -43,6 +43,8 @@ client.on('ready', () =>{
 client.on('message', message =>{
 
     console.log("prefixe = "+prefix);
+
+    //TODO: comprendre pourquoi il ne trouve pas le prefixe
 
     if(checkMessage(message)){
         var msg = new Message();
