@@ -67,7 +67,7 @@ function play(guild, song) {
 
 function skip(message, serverQueue){
 
-    if(!message.member.channel.voice){
+    if(!message.member.voice.channel){
        return message.reply("vous devez être dans un salon vocal pour ecouter de la musique.");
     }
     if(!serverQueue){
