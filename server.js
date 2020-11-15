@@ -68,11 +68,23 @@ function play(guild, song) {
 function skip(message, serverQueue){
 
     if(!message.member.voice.channel){
-       return message.reply("vous devez être dans un salon vocal pour ecouter de la musique.");
+       return message.reply("vous devez être dans un salon vocal pour changer de morceau.");
     }
     if(!serverQueue){
        return message.reply("aucun morceau ne joue actuellement.");
     }
+    serverQueue.connection.dispatcher.end();
+}
+
+function stop(message, serverQueue){
+
+    if(!message.member.voice.channel){
+        return message.reply("vous devez être dans un salon vocal pour arreter la musique.");
+    }
+    if(!serverQueue){
+        return message.reply("aucun morceaux ne joue actuellement.");
+    }
+    serverQueue.songs = []
     serverQueue.connection.dispatcher.end();
 }
 
@@ -199,8 +211,11 @@ client.on('message', message =>{
         }else if(command === "skip" && message.member.permissions.has("ADMINISTRATOR")){
             skip(message, serverQueue);
             return;
+        }else if(command === "stop" && message.member.permissions.has("ADMINISTRATOR")){
+            stop(message, serverQueue);
+            return;
         }else{
-            message.reply("commande inconnue, essayez une commande comme ```!play```");
+            return message.reply("commande inconnue, essayez une commande comme ```!play```");
         }
     }        
 });
