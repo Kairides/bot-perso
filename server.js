@@ -62,8 +62,19 @@ function play(guild, song) {
       })
       .on("error", error => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-    serverQueue.textChannel.send(`Start playing: **${song.title}**`);
-  }
+    serverQueue.textChannel.send(`On écoute maintenant: **${song.title}**`);
+}
+
+function skip(message, serverQueue){
+
+    if(!message.member.channel.voice){
+       return message.reply("vous devez être dans un salon vocal pour ecouter de la musique.");
+    }
+    if(!serverQueue){
+       return message.reply("aucun morceau ne joue actuellement.");
+    }
+    serverQueue.connection.dispatcher.end();
+}
 
 async function searchVideo(args, message, serverQueue){
 
@@ -71,10 +82,10 @@ async function searchVideo(args, message, serverQueue){
     if(!args.length){
         message.reply("paramètres de recherche manquants. Pour que je joue un morceau," +
         "veuillez taper la commande \"play\" suivie de ce que vous voulez que je joue.\n"+
-        "Exemple: ```!play akroasis```");
+        "Exemple: ```!play *addresse youtube du morceau*```");
     }else{
         if(!voiceChannel){
-            message.reply("vous devez être dans un canal vocal pour ecoutez de la musique.");
+            message.reply("vous devez être dans un salon vocal pour ecouter de la musique.");
             return;
         }else{
             var search = args.join(" ");
@@ -183,23 +194,13 @@ client.on('message', message =>{
     
     if(message.channel.type === "dm" || message.channel.name === "general"){
         if(command === "play"){
-
             searchVideo(args, message, serverQueue);
-
-            
+            return;
+        }else if(command === "skip" && message.member.permissions.has("ADMINISTRATOR")){
+            skip(message, serverQueue);
+            return;
         }else{
             message.reply("commande inconnue, essayez une commande comme ```!play```");
         }
     }        
 });
-
-/*function resetPlaying(){
-    playing = false;
-    //console.log("Playing is false !")
-};*/
-
-/*client.on('messageReaction', messageReaction =>{
-    if(message.channel.name === "info-serveur"){
-        console.log(message.users);
-    }
-});*/
