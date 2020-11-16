@@ -51,6 +51,7 @@ function play(guild, song) {
     if (!song) {
       serverQueue.voiceChannel.leave();
       queue.delete(guild.id);
+      client.user.setActivity();
       return;
     }
   
