@@ -54,7 +54,7 @@ function play(guild, song) {
       return;
     }
   
-    client.user.setActivity("♪ " + song.title + " ♪", {type: "CUSTOM_STATUS"});
+    client.user.setActivity("♪ " + song.title + " ♪", {type: "LISTENING"});
     const dispatcher = serverQueue.connection
       .play(ytdl(song.url))
       .on("finish", () => {
