@@ -57,7 +57,7 @@ function play(guild, song) {
   
     client.user.setActivity("♪ " + song.title + " ♪", {type: "LISTENING"});
     const dispatcher = serverQueue.connection
-      .play(ytdl(song.url))
+      .play(ytdl(song.url, {filter: "audioonly"}))
       .on("finish", () => {
         serverQueue.songs.shift();
         play(guild, serverQueue.songs[0]);
