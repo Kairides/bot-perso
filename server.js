@@ -206,7 +206,7 @@ client.on('message', message =>{
     var args = message.content.slice(prefix.length).trim().split(" ");
     const command = args.shift().toLowerCase();
     
-    if(message.channel.type === "dm" || message.channel.name === "general"){
+    if(message.channel.type === "dm" || message.channel.name === "écoute"){
         if(command === "play"){
             searchVideo(args, message, serverQueue);
             return;
