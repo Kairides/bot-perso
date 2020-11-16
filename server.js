@@ -57,10 +57,10 @@ function play(guild, song) {
     client.user.setPresence({
         status: "online",
         game: {
-            name: "♪ " + song.name + " ♪",
+            name: "♪ " + song.title + " ♪",
             type: "STREAMING"
         }
-    })
+    });
     const dispatcher = serverQueue.connection
       .play(ytdl(song.url))
       .on("finish", () => {
