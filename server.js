@@ -1,4 +1,4 @@
-const {Client, MessageEmbed, Message, MessageReaction} = require('discord.js');
+const {Client, MessageEmbed, Message, MessageReaction, MessageFlags} = require('discord.js');
 const ytdl = require('ytdl-core');
 const ytsr = require('ytsr');
 const {prefix, param} = require('./config.json');
@@ -210,14 +210,18 @@ client.on('message', message =>{
         if(command === "play"){
             searchVideo(args, message, serverQueue);
             return;
-        }else if(command === "skip" && message.member.permissions.has("ADMINISTRATOR")){
-            skip(message, serverQueue);
-            return;
-        }else if(command === "stop" && message.member.permissions.has("ADMINISTRATOR")){
-            stop(message, serverQueue);
-            return;
+        }else if(command === "skip"){
+            if(message.member.permissions.has("ADMINISTRATOR")){
+               skip(message, serverQueue);
+                return;
+            }else{return message.reply("vous n'avez les permissions pour utiliser la commande" + command);}
+        }else if(command === "stop"){
+            if(message.member.permissions.has("ADMINISTRATOR")){
+                stop(message, serverQueue);
+                return;
+            }else{return message.reply("vous n'avez les permissions pour utiliser la commande" + command);}          
         }else{
-            return message.reply("commande inconnue, essayez une commande comme ```!play```");
+            return message.reply("commande non valide, essayez une commande comme ```!play```");
         }
     }        
 });
